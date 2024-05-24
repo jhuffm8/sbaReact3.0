@@ -20,23 +20,25 @@ const storeItems = [
     }
 ]
 
-app.use(express.json())
 app.use(cors())
-app.get('/', (req, res) => {
+app.use(express.json())
+
+
+app.get('/checkout', (req, res) => {
     res.json('Here')
 })
 
 app.post('/checkout', async (req, res) => {
     try {
         const session = await stripe.checkout.sessions.create({
-            line_items: storeItems,
             mode: 'payment',
             success_url: 'http://localhost:8080/complete'
         })
         res.status(200).json(session)
+        console.log(session)
         
     } catch (error) {
-        res.status(400).json(error)
+        res.status(400).json("from server", error)
         
     }
     
