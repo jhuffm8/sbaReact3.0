@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import Stripe from 'stripe'
+import cors from 'cors'
 
 const app = express()
 const PORT = 8080
@@ -20,14 +21,19 @@ const storeItems = [
 ]
 
 app.use(express.json())
+app.use(cors())
 app.get('/', (req, res) => {
     res.json('Here')
 })
 
-app.post('/', async (req, res) => {
+app.post('/checkout', async (req, res) => {
     try {
-        const response = await stripe.checkout.sessions.create(req.body)
-        res.status(200).json(response)
+        const session = await stripe.checkout.sessions.create({
+            line_items: storeItems,
+            mode: 'payment',
+            success_url: 'http://localhost:8080/complete'
+        })
+        res.status(200).json(session)
         
     } catch (error) {
         res.status(400).json(error)
