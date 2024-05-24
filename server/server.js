@@ -10,14 +10,16 @@ const PUBLIC_KEY = process.env.PUBLIC_KEY
 const stripe = Stripe(KEY)
 
 const storeItems = [
-    1,{
-        priceInCents: 10000,
-        name: "Dope Shirts"
+   {
+    price_data: {
+        currency: 'usd',
+        product_data: {
+            name: 'Working API please'
+        },
+        unit_amount: 50 * 100
     },
-    2, {
-        priceInCents: 20000,
-        name: "Dope Pants"
-    }
+    quantity: 1
+   }
 ]
 
 app.use(cors())
@@ -31,6 +33,7 @@ app.get('/checkout', (req, res) => {
 app.post('/checkout', async (req, res) => {
     try {
         const session = await stripe.checkout.sessions.create({
+            line_items: storeItems,
             mode: 'payment',
             success_url: 'http://localhost:8080/complete'
         })
@@ -38,7 +41,8 @@ app.post('/checkout', async (req, res) => {
         console.log(session)
         
     } catch (error) {
-        res.status(400).json("from server", error)
+        res.status(400).json( error)
+        console.log('From server', error)
         
     }
     
