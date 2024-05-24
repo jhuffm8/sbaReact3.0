@@ -38,8 +38,7 @@ app.post('/checkout', async (req, res) => {
             success_url: 'http://localhost:5173/success'
         })
         res.status(200).json(session)
-        console.log(session)
-        
+        res.redirect(session.url)
     } catch (error) {
         res.status(400).json( error)
         console.log('From server', error)
