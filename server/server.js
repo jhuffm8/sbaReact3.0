@@ -3,6 +3,7 @@ import express from 'express'
 import Stripe from 'stripe'
 import cors from 'cors'
 
+
 const app = express()
 const PORT = 8080
 const KEY = process.env.STRIPE_KEY
@@ -22,7 +23,11 @@ const storeItems = [
    }
 ]
 
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
 app.use(express.json())
 
 
@@ -37,8 +42,7 @@ app.post('/checkout', async (req, res) => {
             mode: 'payment',
             success_url: 'http://localhost:5173/success'
         })
-        res.status(200).json(session)
-        res.redirect(session.url)
+        res.status(200).json({url: session.url})
     } catch (error) {
         res.status(400).json( error)
         console.log('From server', error)
