@@ -35,7 +35,7 @@ app.post('/checkout', async (req, res) => {
         const session = await stripe.checkout.sessions.create({
             line_items: storeItems,
             mode: 'payment',
-            success_url: 'http://localhost:8080/complete'
+            success_url: 'http://localhost:5173/success'
         })
         res.status(200).json(session)
         console.log(session)
