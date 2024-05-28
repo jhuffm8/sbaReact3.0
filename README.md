@@ -23,3 +23,5 @@ once you click checkout it will redirect you to a success page from the frontend
 
 
 repo link for frontend just in case: https://github.com/jhuffm8/sbaReact2.0
+
+link to site : https://scintillating-toffee-3acbe0.netlify.app/
